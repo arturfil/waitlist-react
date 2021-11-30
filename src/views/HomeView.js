@@ -8,17 +8,14 @@ const HomeView = () => {
     name: "",
     note: "",
   });
-  const authUser = isAuth();
+  
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     getAllTurns();
   }, []);
 
-  function isAuth() {
-      const obj = localStorage.getItem('jwtWaitList');
-      return obj;
-  }
+ 
 
   async function getAllTurns() {
     const response = await axios.get(`${apiUrl}/turns`);
