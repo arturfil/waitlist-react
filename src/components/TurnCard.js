@@ -1,6 +1,6 @@
 import "../App.css";
 
-const TurnCard = ({ turn, callback, place }) => {
+const TurnCard = ({ turn, func, place }) => {
   const authUser = isAuth();
 
   function isAuth() {
@@ -33,7 +33,7 @@ const TurnCard = ({ turn, callback, place }) => {
         <button
             style={{ textAlign: "right", alignSelf: "flex-end" }}
             className="btn btn-outline-danger"
-            onClick={callback}
+            onClick={() => func(turn._id)}
         >
             Delete
         </button>

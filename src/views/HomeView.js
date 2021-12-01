@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import TurnCard from '../components/TurnCard'
+import TurnCard from "../components/TurnCard";
 
 const HomeView = () => {
   const [turns, setTurns] = useState([]);
@@ -8,14 +8,12 @@ const HomeView = () => {
     name: "",
     note: "",
   });
-  
+
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     getAllTurns();
   }, []);
-
- 
 
   async function getAllTurns() {
     const response = await axios.get(`${apiUrl}/turns`);
@@ -39,13 +37,14 @@ const HomeView = () => {
     getAllTurns();
   }
 
-  async function handleDelete(id) {
-    const response = await axios.delete(`${apiUrl}/turns/turn/${id}`);
+  const handleDelete = async (id) => {
+    // alert("HERE", event.target.key);
     const filtered = turns.filter((turn) => {
-      return turn._id != id;
+      return id !== turn._id;
     });
+    await axios.delete(`${apiUrl}/turns/turn/${id}`);
     setTurns(filtered);
-  }
+  };
 
   return (
     <div className="container mt-5">
@@ -81,13 +80,8 @@ const HomeView = () => {
           <h2 style={{ fontWeight: "bold" }}>Wait List</h2>
           {turns.length === 0 && <h4>Currently there is no queue</h4>}
           {turns &&
-            turns.map((turn, i) => (
-              <TurnCard
-                place={i}
-                callback={() => handleDelete(turn._id)}
-                key={turn._id}
-                turn={turn}
-              />
+            turns.map((t, i) => (
+                <TurnCard key={t._id} place={i}  func={() => handleDelete(t._id)} turn={t} />
             ))}
         </div>
       </div>
