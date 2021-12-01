@@ -29,9 +29,8 @@ const LoginView = () => {
       <form
         style={{
           padding: 20,
-          width: "400px",
+          maxWidth: "400px",
           margin: "0 auto",
-          border: "solid 1px lightgrey",
         }}
       >
         <h2 style={{ fontWeight: "bold" }}>Login</h2>
