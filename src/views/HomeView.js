@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import TurnCard from "../components/TurnCard";
+import { Spinner } from 'react-bootstrap';
 
 const HomeView = () => {
   const [turns, setTurns] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [turn, setTurn] = useState({
     name: "",
     note: "",
@@ -16,8 +19,10 @@ const HomeView = () => {
   }, []);
 
   async function getAllTurns() {
+    setLoading(true);
     const response = await axios.get(`${apiUrl}/turns`);
     setTurns(response.data);
+    setLoading(false);
   }
 
   function handleChange(event) {
@@ -78,10 +83,25 @@ const HomeView = () => {
         </div>
         <div className="col-md-6 col-lg-6 col-sm-12 my-5">
           <h2 style={{ fontWeight: "bold" }}>Wait List</h2>
-          {turns.length === 0 && <h4>Currently there is no queue</h4>}
+          {loading && (
+            <div  className="container" >
+              <Spinner style={{margin: '0 auto', display: 'flex', height: 50, width: 50}} animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              <h2 style={{display: 'flex', margin: "20px auto", justifyContent: 'center'}}>Loading</h2>
+            </div>
+          )}
+          {turns.length === 0 && !loading && (
+            <h4>Currently there is no queue</h4>
+          )}
           {turns &&
             turns.map((t, i) => (
-                <TurnCard key={t._id} place={i}  func={() => handleDelete(t._id)} turn={t} />
+              <TurnCard
+                key={t._id}
+                place={i}
+                func={() => handleDelete(t._id)}
+                turn={t}
+              />
             ))}
         </div>
       </div>
